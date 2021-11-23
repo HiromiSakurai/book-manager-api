@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/HiromiSakurai/book-manager-api/entity"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -31,12 +32,7 @@ func database() (database *gorm.DB, err error) {
 	return gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 
-type book struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
-}
-
-var books = []book{
+var books = []entity.Book{
 	{ID: "1", Title: "hoge"},
 	{ID: "2", Title: "fuga"},
 	{ID: "3", Title: "sakurai"},
@@ -48,7 +44,7 @@ func getBooks(c *gin.Context) {
 }
 
 func postBooks(c *gin.Context) {
-	var newBook book
+	var newBook entity.Book
 
 	if err := c.BindJSON(&newBook); err != nil {
 		return
