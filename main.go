@@ -1,18 +1,34 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main() {
+	_, err := database()
+	if err != nil {
+		fmt.Println("DB接続失敗")
+		panic(err.Error())
+	} else {
+		fmt.Println("DB接続成功")
+	}
+
 	router := gin.Default()
 	router.GET("/books", getBooks)
 	router.GET("/books/:id", getBookByID)
 	router.POST("/books", postBooks)
 
 	router.Run("localhost:8080")
+}
+
+func database() (database *gorm.DB, err error) {
+	dsn := "root:@tcp(localhost:3306)/book_manager_api?charset=utf8mb4&parseTime=True&loc=Local"
+	return gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 
 type book struct {
