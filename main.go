@@ -8,16 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func main() {
-	_, err := database()
+	db, err := database()
 	if err != nil {
 		fmt.Println("DB接続失敗")
 		panic(err.Error())
 	} else {
 		fmt.Println("DB接続成功")
 	}
+
+	db.Logger.LogMode(logger.LogLevel(4))
 
 	router := gin.Default()
 	router.GET("/books", getBooks)
