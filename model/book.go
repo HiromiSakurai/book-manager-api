@@ -1,8 +1,12 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"time"
+)
 
 type Book struct {
-	gorm.Model
-	Title string `gorm:"size:255"`
+	ID        uint   `gorm:"primaryKey"`
+	Title     string `gorm:"size:255" gorm:"not null"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
