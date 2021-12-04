@@ -28,7 +28,13 @@ func main() {
 	router.GET("/books/:id", getBookByID)
 	router.POST("/books", postBooks)
 
+	router.GET("/ping", ping)
+
 	router.Run("localhost:8080")
+}
+
+func ping(c *gin.Context) {
+	c.String(http.StatusOK, "pong")
 }
 
 func database() (database *gorm.DB, err error) {
