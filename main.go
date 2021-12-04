@@ -12,8 +12,11 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+var db *gorm.DB
+
 func main() {
-	db, err := database()
+	var err error
+	db, err = database()
 	if err != nil {
 		fmt.Println("DB接続失敗")
 		panic(err.Error())
@@ -60,9 +63,14 @@ func postBooks(c *gin.Context) {
 		return
 	}
 
-	// Add the new album to the slice.
-	books = append(books, newBook)
-	c.IndentedJSON(http.StatusCreated, newBook)
+	result := db.Create(&newBook)
+
+	if result.Error != nil {
+		// record creation failure
+	} else {
+		c.IndentedJSON(http.StatusCreated, newBook)
+	}
+
 }
 
 func getBookByID(c *gin.Context) {
