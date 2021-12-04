@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
-	"github.com/HiromiSakurai/book-manager-api/entity"
+	"github.com/HiromiSakurai/book-manager-api/model"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -35,11 +36,11 @@ func database() (database *gorm.DB, err error) {
 	return gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 
-var books = []entity.Book{
-	{ID: "1", Title: "hoge"},
-	{ID: "2", Title: "fuga"},
-	{ID: "3", Title: "sakurai"},
-	{ID: "4", Title: "hiromi"},
+var books = []model.Book{
+	{ID: 1, Title: "hoge"},
+	{ID: 2, Title: "fuga"},
+	{ID: 3, Title: "sakurai"},
+	{ID: 4, Title: "hiromi"},
 }
 
 func getBooks(c *gin.Context) {
@@ -47,7 +48,7 @@ func getBooks(c *gin.Context) {
 }
 
 func postBooks(c *gin.Context) {
-	var newBook entity.Book
+	var newBook model.Book
 
 	if err := c.BindJSON(&newBook); err != nil {
 		return
@@ -59,7 +60,8 @@ func postBooks(c *gin.Context) {
 }
 
 func getBookByID(c *gin.Context) {
-	id := c.Param("id")
+	idstr := c.Param("id")
+	id, _ := strconv.ParseUint(idstr, 10, 64)
 
 	for _, b := range books {
 		if b.ID == id {

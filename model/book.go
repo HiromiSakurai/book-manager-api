@@ -5,8 +5,8 @@ import (
 )
 
 type Book struct {
-	ID        uint   `gorm:"primaryKey"`
-	Title     string `gorm:"size:255" gorm:"not null"`
+	ID        uint64 `gorm:"primaryKey" json:"id"`
+	Title     string `gorm:"size:255" gorm:"not null" json:"title"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
