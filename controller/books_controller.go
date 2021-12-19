@@ -35,7 +35,6 @@ func CreateBooks(c *gin.Context) {
 	} else {
 		c.IndentedJSON(http.StatusCreated, newBook)
 	}
-
 }
 
 func GetBookByID(c *gin.Context) {
